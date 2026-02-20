@@ -36,9 +36,6 @@ void sort(char **words, int nr_words) {
                 int letter = 0;
                 while(words[min][letter] == words[j][letter] && words[min][letter] != '\0') letter++;
                 if(words[min][letter] > words[j][letter]) {
-                    //aux = words[i];
-                    //words[i] = words[min];
-                    //words[min] = aux;
                     min = j;
                 }
             }
@@ -68,3 +65,4 @@ int main() {
     printf("%d", nr_words);
     return 0;
 }
+
