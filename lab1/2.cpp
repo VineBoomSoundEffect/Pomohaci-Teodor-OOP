@@ -26,24 +26,22 @@ int wordLen(char *input) {
 }
 
 void sort(char **words, int nr_words) {
-    int min;
+    int max;
     char *aux;
     for(int i=0;i<nr_words-1;i++) {
-        min = i;
+        max = i;
         for(int j=i+1;j<nr_words;j++) {
-            if(wordLen(words[min]) > wordLen(words[j])) min = j;
-            else if(wordLen(words[min]) == wordLen(words[j])) {
+            if(wordLen(words[max]) < wordLen(words[j])) max = j;
+            else if(wordLen(words[max]) == wordLen(words[j])) {
                 int letter = 0;
-                while(words[min][letter] == words[j][letter] && words[min][letter] != '\0') letter++;
-                if(words[min][letter] > words[j][letter]) {
-                    min = j;
-                }
+                while(words[max][letter] == words[j][letter] && words[max][letter] != '\0') letter++;
+                if(words[max][letter] < words[j][letter]) max = j;
             }
         }
-        if(min != i) {
+        if(max != i) {
             aux = words[i];
-            words[i] = words[min];
-            words[min] = aux;
+            words[i] = words[max];
+            words[max] = aux;
         }
     }
 }
@@ -61,8 +59,5 @@ int main() {
     for(int i=0;i<nr_words;i++){
         printf("%s: %d\n", words[i], wordLen(words[i]));
     }
-    printf("\n");
-    printf("%d", nr_words);
     return 0;
 }
-
