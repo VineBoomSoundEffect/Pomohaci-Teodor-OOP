@@ -57,12 +57,21 @@ Sort::Sort(char *s) {
 }
 
 void Sort::InsertSort(bool ascendent) {
+    for (int i = 1; i < size; i++) {
+        for (int j = i; j > 0 && (ascendent && a[j-1] > a[j] || !ascendent && a[j-1] < a[j]); j--) {
+            if (ascendent && a[j-1] > a[j] || !ascendent && a[j-1] < a[j]) {
+                int aux = a[j-1];
+                a[j-1] = a[j];
+                a[j] = aux;
+            }
+        }
+    }
 }
 void Sort::QuickSort(bool ascendent) {
 }
 void Sort::BubbleSort(bool ascendent) {
-    for (int i = 0; i < this->size-1; i++) {
-        for (int j = i+1; j < this->size; j++) {
+    for (int i = 0; i < size-1; i++) {
+        for (int j = i+1; j < size; j++) {
             if (ascendent && a[i] > a[j] || !ascendent && a[i] < a[j]) {
                 int aux = a[i];
                 a[i] = a[j];

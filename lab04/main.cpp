@@ -8,7 +8,7 @@ int main() {
     s1.Print();
     s1.BubbleSort(true);
     s1.Print();
-    s1.BubbleSort(false);
+    s1.InsertSort(false);
     s1.Print();
 
     int n = 5;
