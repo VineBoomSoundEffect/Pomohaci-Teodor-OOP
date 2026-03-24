@@ -26,15 +26,34 @@ int Number::GetIntegerValue() {
     return total_value;
 }
 
+char *nr(int number, int base) {
+    const char digits[] = "0123456789ABCDEF";
+    char *value = new char[255];
+    int len = 0;
+    while (number > 0) {
+        int remainder = number % base;
+        for (int i = len; i > 0; i--) {
+            value[i] = value[i-1];
+        }
+        len++;
+        if (0 <= remainder && remainder <= 9) value[0] = remainder + '0';
+        else if (10 <= remainder && remainder <= 15) value[0] = remainder - 10 + 'A';
+        number /= base;
+    }
+    return value;
+}
+
 Number::Number(const char * value, int base) {
     this->value = (char *)malloc((strlen(value)+1) * sizeof(char));
     strcpy(this->value, value);
     this->base = base;
 }
 
-// TODO:
-Number::Number(int value, int base) {
+Number::Number(int number) {
+    this->base = 10;
+    this->value = nr(number, this->base);
 }
+
 Number::~Number() {
     //free(this->value);
 }
@@ -42,14 +61,14 @@ Number::~Number() {
 Number operator+(Number a, Number b) {
     int base = (a.base > b.base) ? a.base : b.base;
     int n = a.GetIntegerValue() + b.GetIntegerValue();
-    Number nr(n, base);
-    return nr;
+    Number result(nr(n, base), base);
+    return result;
 }
 Number operator-(Number a, Number b) {
     int base = (a.base > b.base) ? a.base : b.base;
     int n = a.GetIntegerValue() - b.GetIntegerValue();
-    Number nr(n, base);
-    return nr;
+    Number result(nr(n, base), base);
+    return result;
 }
 
 char Number::operator[](int i) {
@@ -71,25 +90,27 @@ bool Number::operator==(Number a) {
     return this->GetIntegerValue() == a.GetIntegerValue();
 }
 void Number::operator--() { //prefix
-    printf("here\n");
+    this->value++;
 }
 void Number::operator--(int) { //postfix
-    printf("there\n");
+    int i = 0;
+    while (this->value[i+1] != '\0') i++;
+    this->value[i] = '\0';
 }
 
-// TODO:
+void Number::operator=(int number) {
+    this->value = nr(number, this->base);
+}
+void Number::operator=(const char *value) {
+    strcpy(this->value, value);
+}
+void Number::operator+=(Number a) {
+    *this = *this + a;
+}
+
 void Number::SwitchBase(int newBase) {
-    printf("total_value: %d\n", this->GetIntegerValue());
-
-    //char *newValue = new char[20];
-    //int wholes = total_value / newBase;
-    //int remainder = total_value % newBase;
-    //printf("wholes: %d\n", wholes);
-    //printf("remainder: %d\n", remainder);
-
-    //for (int i = 0; i < wholes; i++) {
-
-    //}
+    this->value = nr(this->GetIntegerValue(), newBase);
+    this->base = newBase;
 }
 void Number::Print() {
    printf("%s\n",this->value);
